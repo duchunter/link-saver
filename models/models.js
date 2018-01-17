@@ -19,7 +19,7 @@ const parse = function parseToQuery(condition, connector) {
 }
 
 // All this file will export
-export { scanTable, addToTable, updateInTable, delFromTable };
+export { scanTable, addToTable, updateInTable, delFromTable, countInTable };
 
                           //  READ  //
 async function scanTable({ table, limit, offset = 0, condition = {} }) {
@@ -96,6 +96,25 @@ async function delFromTable({table, condition}) {
   } catch (e) {
     console.log(e);
     result = false;
+  }
+
+  return result;
+}
+
+                        // COUNT //
+async function countInTable({ table, col = '*', condition = {} }) {
+  let result;
+
+  // Parse condition to query string
+  let notEmpty = Object.keys(condition).length !== 0;
+  let query = notEmpty ? `where ${parse(condition, ' and ')}` : '';
+
+  // Await db to respond and return result
+  try {
+    result = await db.any(`select count(${col}) from ${table} ${query}`);
+  } catch (e) {
+    console.log(e);
+    result = { count: -1 };
   }
 
   return result;

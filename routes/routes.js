@@ -3,16 +3,31 @@
 import express from 'express';
 import { authCheck } from './auth0/auth0';
 import jwtAuthz from 'express-jwt-authz';
+import requestInfo from '../controller/requestInfo';
+import requestLink from '../controller/requestLink';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
 
 // TODO: add authCheck and scopeCheck when ready
 
+                    // MAIN MODULES
+
+// Get info
+router.get('/api/info/:item', requestInfo);
+
+// Request links
+router.post('/api/search', requestLink);
+
 // Add new link
 router.put('/api/add', (req, res) => {
   res.json('Add new link');
 });
+
+// Promote link from Temp to Main
+router.post('/api/promote', (req, res) => {
+  res.json('Promote');
+})
 
 // Update link
 router.post('/api/update', (req, res) => {
@@ -24,19 +39,11 @@ router.delete('/api/delete', (req, res) => {
   res.json('Delete link');
 });
 
+                  // SUPPPORTING MODULES
+
 // Parse web to add link
 router.put('/api/parse', (req, res) => {
   res.json('Parse link');
-});
-
-// Request a specific number of link, looks like Google
-router.get('/api/page/:num', (req, res) => {
-  res.json(`Page ${req.params.num}`);
-});
-
-// Request links using search engine :v
-router.post('/api/search', (req, res) => {
-  res.json('Search');
 });
 
 // Request instant backup
