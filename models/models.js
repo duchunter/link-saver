@@ -14,6 +14,13 @@ const db = pgp(connectionString || process.env.DATABASE_URL);
 // Parse condition 'where' or 'set' to query
 const parse = function parseToQuery(condition, connector) {
   return Object.keys(condition).map((key) => {
+    // For comparision like > <
+    if (typeof(condition[key] === 'object')) {
+      let { logic, value } = condition[key];
+      return `${key}${logic}${value}`;
+    }
+
+    // Common =
     return `${key}='${condition[key]}'`;
   }).join(connector);
 }
