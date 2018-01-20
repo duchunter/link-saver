@@ -19,7 +19,7 @@ router.get('/api/info/:item', requestInfo);
 // Request links
 router.post('/api/search', requestLink);
 
-// Add new link
+// Add new link with 2 mode: direct and temp
 router.put('/api/add', (req, res) => {
   res.json('Add new link');
 });
