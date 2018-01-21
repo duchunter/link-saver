@@ -11,6 +11,9 @@ const pgp = pg({
 const connectionString = 'postgres://localhost:5432/link';
 const db = pgp(connectionString || process.env.DATABASE_URL);
 
+// All this file will export
+export { scanTable, addToTable, updateInTable, delFromTable, countInTable };
+
 // Parse condition 'where' or 'set' to query
 const parse = function parseToQuery(condition, connector) {
   return Object.keys(condition).map((key) => {
@@ -24,9 +27,6 @@ const parse = function parseToQuery(condition, connector) {
     return `${key}='${condition[key]}'`;
   }).join(connector);
 }
-
-// All this file will export
-export { scanTable, addToTable, updateInTable, delFromTable, countInTable };
 
                           //  READ  //
 async function scanTable({ table, limit, offset = 0, condition = {} }) {

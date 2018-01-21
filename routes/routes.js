@@ -5,6 +5,7 @@ import { authCheck } from './auth0/auth0';
 import jwtAuthz from 'express-jwt-authz';
 import requestInfo from '../controller/requestInfo';
 import requestLink from '../controller/requestLink';
+import addLink from '../controller/addLink';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
@@ -20,18 +21,21 @@ router.get('/api/info/:item', requestInfo);
 router.post('/api/search', requestLink);
 
 // Add new link with 2 mode: direct and temp
-router.put('/api/add', (req, res) => {
-  res.json('Add new link');
+router.put('/api/add', addLink);
+
+// Update link
+router.post('/api/update', (req, res) => {
+  res.json('Update link');
 });
 
 // Promote link from Temp to Main
 router.post('/api/promote', (req, res) => {
   res.json('Promote');
-})
+});
 
-// Update link
-router.post('/api/update', (req, res) => {
-  res.json('Update link');
+// Demote link
+router.post('/api/demote', (req, res) => {
+  res.json('Demote');
 });
 
 // Delete link
