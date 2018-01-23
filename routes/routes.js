@@ -4,7 +4,7 @@ import express from 'express';
 import { authCheck } from './auth0/auth0';
 import jwtAuthz from 'express-jwt-authz';
 import requestInfo from '../controller/requestInfo';
-import requestLink from '../controller/requestLink';
+import searchLink from '../controller/searchLink';
 import addLink from '../controller/addLink';
 
 const scopeCheck = jwtAuthz(['admin']);
@@ -18,7 +18,7 @@ const router = express.Router();
 router.get('/api/info/:item', requestInfo);
 
 // Request links
-router.post('/api/search', requestLink);
+router.post('/api/search', searchLink);
 
 // Add new link with 2 mode: direct and temp
 router.put('/api/add', addLink);
