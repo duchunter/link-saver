@@ -7,10 +7,10 @@ export default async function (req, res) {
   let result = await countInTable({ table, condition });
 
   // Invalid query
-  if (result.count === -1) {
+  if (result[0].count === -1) {
     res.status(400).json('Invalid request');
   } else {
     // OK
-    res.status(200).json(result.count);
+    res.status(200).json(result[0].count);
   }
 }

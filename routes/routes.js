@@ -13,6 +13,7 @@ import addLink from '../controller/addLink';
 import adjustLink from '../controller/adjustLink';
 import deleteLink from '../controller/deleteLink';
 import editLink from '../controller/editLink';
+import { sendLog } from '../utils/log';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
@@ -52,8 +53,13 @@ router.post('/api/backup', (req, res) => {
 });
 
 // Request instant log transfer
-router.post('api/log', (req, res) => {
-  res.json('Log transfer');
+router.post('/api/log', async (req, res) => {
+  let isSuccess = await sendLog();
+  if (isSuccess) {
+    res.status(200).json('All logs have been sent');
+  } else {
+    res.status(500).json('ERROR: Cannot send logs');
+  }
 });
 
 export default router;

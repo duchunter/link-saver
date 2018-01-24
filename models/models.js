@@ -21,8 +21,8 @@ async function scanTable({ table, limit, offset, condition }) {
   let result = [];
 
   // Parse condition to query string
-  let notEmpty = Object.keys(condition).length !== 0;
-  let query = notEmpty ? `where ${parse(condition || {}, ' and ')}` : '';
+  let notEmpty = condition ? Object.keys(condition).length !== 0 : false;
+  let query = notEmpty ? `where ${parse(condition, ' and ')}` : '';
 
   // Parse limit and offset to set range
   let range = (limit) ? `limit ${limit} offset ${offset || 0}` : '';
@@ -40,6 +40,8 @@ async function scanTable({ table, limit, offset, condition }) {
 
                           //  CREATE  //
 async function addToTable({ table, data }) {
+  // Must have data
+  if (!data) return false;
   let result = true;
 
   // Parse keys and values from data
@@ -59,6 +61,8 @@ async function addToTable({ table, data }) {
 
                           //  UPDATE  //
 async function updateInTable({ table, changes, condition }) {
+  // Must have changes and condition
+  if (!changes || !condition) return false;
   let result = true;
 
   // Parse changes to format `key='value'`
@@ -80,6 +84,8 @@ async function updateInTable({ table, changes, condition }) {
 
                           //  REMOVE  //
 async function delFromTable({table, condition}) {
+  // Must have condition
+  if(!condition) return false;
   let result = true;
 
   // Parse condition
@@ -101,7 +107,7 @@ async function countInTable({ table, col, condition }) {
   let result;
 
   // Parse condition to query string
-  let notEmpty = Object.keys(condition).length !== 0;
+  let notEmpty = condition ? Object.keys(condition).length !== 0 : false;
   let query = notEmpty ? `where ${parse(condition || {}, ' and ')}` : '';
 
   // Await db to respond and return result
