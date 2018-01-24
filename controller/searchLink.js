@@ -24,5 +24,5 @@ export default async function (req, res) {
   }
 
   // Invalid mode
-  return res.json([]);
+  return res.status(400).json([]);
 }

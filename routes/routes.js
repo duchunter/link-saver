@@ -1,11 +1,18 @@
 'use strict'
 
 import express from 'express';
+
+// Authentication and authorization modules
 import { authCheck } from './auth0/auth0';
 import jwtAuthz from 'express-jwt-authz';
+
+// API modules
 import requestInfo from '../controller/requestInfo';
 import searchLink from '../controller/searchLink';
 import addLink from '../controller/addLink';
+import adjustLink from '../controller/adjustLink';
+import deleteLink from '../controller/deleteLink';
+import editLink from '../controller/editLink';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
@@ -15,7 +22,7 @@ const router = express.Router();
                     // MAIN MODULES
 
 // Get info
-router.get('/api/info/:item', requestInfo);
+router.post('/api/info', requestInfo);
 
 // Request links
 router.post('/api/search', searchLink);
@@ -23,25 +30,14 @@ router.post('/api/search', searchLink);
 // Add new link with 2 mode: direct and temp
 router.put('/api/add', addLink);
 
-// Update link
-router.post('/api/update', (req, res) => {
-  res.json('Update link');
-});
+// Edit link info
+router.post('/api/edit', editLink);
 
-// Promote link from Temp to Main
-router.post('/api/promote', (req, res) => {
-  res.json('Promote');
-});
-
-// Demote link
-router.post('/api/demote', (req, res) => {
-  res.json('Demote');
-});
+// Promote or demote link
+router.post('/api/adjust', adjustLink);
 
 // Delete link
-router.delete('/api/delete', (req, res) => {
-  res.json('Delete link');
-});
+router.delete('/api/delete', deleteLink);
 
                   // SUPPPORTING MODULES
 

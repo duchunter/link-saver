@@ -2,6 +2,7 @@
 
 import promise from 'bluebird';
 import pg from 'pg-promise';
+import parse from './parseToQuery';
 
 const pgp = pg({
   promiseLib: promise
@@ -14,36 +15,23 @@ const db = pgp(connectionString || process.env.DATABASE_URL);
 // All this file will export
 export { scanTable, addToTable, updateInTable, delFromTable, countInTable };
 
-// Parse condition 'where' or 'set' to query
-const parse = function parseToQuery(condition, connector) {
-  return Object.keys(condition).map((key) => {
-    // For comparision like > <
-    if (typeof(condition[key] === 'object')) {
-      let { logic, value } = condition[key];
-      return `${key}${logic}${value}`;
-    }
-
-    // Common =
-    return `${key}='${condition[key]}'`;
-  }).join(connector);
-}
 
                           //  READ  //
-async function scanTable({ table, limit, offset = 0, condition = {} }) {
+async function scanTable({ table, limit, offset, condition }) {
   let result = [];
 
   // Parse condition to query string
   let notEmpty = Object.keys(condition).length !== 0;
-  let query = notEmpty ? `where ${parse(condition, ' and ')}` : '';
+  let query = notEmpty ? `where ${parse(condition || {}, ' and ')}` : '';
 
   // Parse limit and offset to set range
-  let range = (limit) ? `limit ${limit} offset ${offset}` : '';
+  let range = (limit) ? `limit ${limit} offset ${offset || 0}` : '';
 
   // Await db to respond and return result
   try {
     result = await db.any(`select * from ${table} ${query} ${range}`);
   } catch (e) {
-    console.log(e);
+    console.log(`select * from ${table} ${query} ${range}`);
     result = [];
   }
 
@@ -109,16 +97,18 @@ async function delFromTable({table, condition}) {
 }
 
                         // COUNT //
-async function countInTable({ table, col = '*', condition = {} }) {
+async function countInTable({ table, col, condition }) {
   let result;
 
   // Parse condition to query string
   let notEmpty = Object.keys(condition).length !== 0;
-  let query = notEmpty ? `where ${parse(condition, ' and ')}` : '';
+  let query = notEmpty ? `where ${parse(condition || {}, ' and ')}` : '';
 
   // Await db to respond and return result
   try {
-    result = await db.any(`select count(${col}) from ${table} ${query}`);
+    result = await db.any(
+      `select count(${col || '*'}) from ${table} ${query}`
+    );
   } catch (e) {
     console.log(e);
     result = { count: -1 };
