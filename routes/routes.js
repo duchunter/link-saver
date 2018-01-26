@@ -2,9 +2,10 @@
 
 import express from 'express';
 
-// Authentication and authorization modules
-import { authCheck } from './auth0/auth0';
+// Utility modules
 import jwtAuthz from 'express-jwt-authz';
+import { authCheck } from '../utils/auth0';
+import { sendLog } from '../utils/log';
 
 // API modules
 import requestInfo from '../controller/requestInfo';
@@ -13,7 +14,6 @@ import addLink from '../controller/addLink';
 import adjustLink from '../controller/adjustLink';
 import deleteLink from '../controller/deleteLink';
 import editLink from '../controller/editLink';
-import { sendLog } from '../utils/log';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();

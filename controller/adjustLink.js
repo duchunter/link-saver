@@ -3,6 +3,7 @@
 // Promote or demote link
 
 import { scanTable, addToTable, delFromTable } from '../models/models';
+import { addLog } from '../utils/log';
 
 export default async function (req, res) {
   const { promote, id } = req.body;
@@ -11,32 +12,32 @@ export default async function (req, res) {
   const [oldTable, newTable] = promote ? ['Temp', 'Main'] : ['Main', 'Temp'];
 
   // Get link from source table based on id
-  let result = await scanTable({
+  let linkList = await scanTable({
     table: oldTable,
     condition: { id }
   });
 
   // Check if scan table fail
-  if (result.length === 0) {
+  if (linkList.length === 0) {
     res.status(404).json('Link not found');
     return 1;
   }
 
   // Edit data before add to new table
   if (promote) {
-    delete result[0].origin;
+    delete linkList[0].origin;
   }
   else {
-    result[0].origin = 'demote';
+    linkList[0].origin = 'demote';
   }
 
-  delete result[0].id;
+  delete linkList[0].id;
 
   // Add link to new table and remove from the old one
-  result = await Promise.all([
+  isSuccess = await Promise.all([
     addToTable({
       table: newTable,
-      data: result[0]
+      data: linkList[0]
     }),
     delFromTable({
       table: oldTable,
@@ -44,10 +45,25 @@ export default async function (req, res) {
     })
   ]);
 
-  // Return message based on result
-  if (result[0] && result[1]) {
-    res.status(200).json(`Link ${promote ? 'promoted' : 'demoted'}`);
+  // Return message based on linkList
+  const action = promote ? 'promote' : 'demote';
+  if (isSuccess[0] && isSuccess[1]) {
+    addLog({
+      code: action,
+      content: `${linkList[0].id} - ${linkList[0].link}`,
+    });
+
+    res.status(200).json(`Link ${action}ed`);
   } else {
-    res.status(500).json(`Add: ${result[0]}, Delete: ${result[1]}`);
+    // ERROR
+    const status = `Add: ${isSuccess[0]}, Delete: ${isSuccess[1]}`;
+    addLog({
+      code: 'error',
+      content: `${action} link catch an error
+      - Status: ${status},
+      - Data: ${linkList[0].toString()}`,
+    });
+
+    res.status(500).json(status);
   }
 }

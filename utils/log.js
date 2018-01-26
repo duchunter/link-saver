@@ -24,7 +24,7 @@ async function addLog({ code, content }) {
   ].join(':');
 
   // Add to log table
-  let result = await addToTable({
+  let isSuccess = await addToTable({
     table: 'Logs',
     data: { created, code, content }
   });
@@ -35,7 +35,7 @@ async function addLog({ code, content }) {
    * - Wrong syntax (meh)
    * - DB is full or error or whatever (oh f*ck)
    */
-  if (!result) console.log('Cannot save log!');
+  if (!isSuccess) console.log('Cannot save log!');
 }
 
 // SEND ALL LOG TO LOG SERVER
@@ -83,7 +83,7 @@ async function sendLog() {
     }));
 
     addLog({
-      code: 'send-log-done',
+      code: 'send-log',
       content: 'All log sent',
     });
 
@@ -92,8 +92,9 @@ async function sendLog() {
 
   // If request is denied
   addLog({
-    code: 'send-log-failed',
-    content: `Log response: status ${response.status}, msg: ${response.body.msg}`,
+    code: 'error',
+    content:
+      `Log response: status ${response.status}, msg: ${response.body.msg}`,
   });
 
   return false;

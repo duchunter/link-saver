@@ -3,6 +3,7 @@
 import promise from 'bluebird';
 import pg from 'pg-promise';
 import parse from './parseToQuery';
+import { addLog } from '../utils/log';
 
 const pgp = pg({
   promiseLib: promise
@@ -31,7 +32,11 @@ async function scanTable({ table, limit, offset, condition }) {
   try {
     result = await db.any(`select * from ${table} ${query} ${range}`);
   } catch (e) {
-    console.log(`select * from ${table} ${query} ${range}`);
+    // ERROR
+    addLog({
+      code: 'error',
+      content: `Model: failed to 'select * from ${table} ${query} ${range}'`,
+    });
     result = [];
   }
 
@@ -52,7 +57,12 @@ async function addToTable({ table, data }) {
   try {
     await db.none(`insert into ${table} (${keys}) values (${values})`);
   } catch (e) {
-    console.log(e);
+    // ERROR
+    addLog({
+      code: 'error',
+      content:
+        `Model: failed to 'insert into ${table} (${keys}) values (${values})'`,
+    });
     result = false;
   }
 
@@ -75,7 +85,12 @@ async function updateInTable({ table, changes, condition }) {
   try {
     await db.none(`update ${table} set ${update} where ${query}`);
   } catch (e) {
-    console.log(e);
+    // ERROR
+    addLog({
+      code: 'error',
+      content:
+        `Model: failed to 'update ${table} set ${update} where ${query}'`,
+    });
     result = false;
   }
 
@@ -95,7 +110,11 @@ async function delFromTable({table, condition}) {
   try {
     await db.none(`delete from ${table} where ${query}`);
   } catch (e) {
-    console.log(e);
+    // ERROR
+    addLog({
+      code: 'error',
+      content: `Model: failed to 'delete from ${table} where ${query}'`,
+    });
     result = false;
   }
 
@@ -116,7 +135,12 @@ async function countInTable({ table, col, condition }) {
       `select count(${col || '*'}) from ${table} ${query}`
     );
   } catch (e) {
-    console.log(e);
+    // ERROR
+    addLog({
+      code: 'error',
+      content:
+        `Model: failed to 'select count(${col || '*'}) from ${table} ${query}'`,
+    });
     result = { count: -1 };
   }
 
