@@ -23,22 +23,22 @@ const router = express.Router();
                     // MAIN MODULES
 
 // Get info
-router.post('/api/info', requestInfo);
+router.post('/api/info', authCheck, scopeCheck, requestInfo);
 
 // Request links
-router.post('/api/search', searchLink);
+router.post('/api/search', authCheck, scopeCheck, searchLink);
 
 // Add new link with 2 mode: direct and temp
-router.put('/api/add', addLink);
+router.put('/api/add', authCheck, scopeCheck, addLink);
 
 // Edit link info
-router.post('/api/edit', editLink);
+router.post('/api/edit', authCheck, scopeCheck, editLink);
 
 // Promote or demote link
-router.post('/api/adjust', adjustLink);
+router.post('/api/adjust', authCheck, scopeCheck, adjustLink);
 
 // Delete link
-router.delete('/api/delete', deleteLink);
+router.delete('/api/delete', authCheck, scopeCheck, deleteLink);
 
                   // SUPPPORTING MODULES
 
@@ -53,7 +53,7 @@ router.post('/api/backup', (req, res) => {
 });
 
 // Request instant log transfer
-router.post('/api/log', async (req, res) => {
+router.post('/api/log', authCheck, scopeCheck, async (req, res) => {
   let isSuccess = await sendLog();
   if (isSuccess) {
     res.status(200).json('All logs have been sent');
