@@ -4,10 +4,17 @@ import { addToTable } from '../models/models';
 import { addLog } from '../utils/log';
 
 export default async function (req, res) {
-  const { direct, data } = req.body;
+  let { direct, data } = req.body;
 
-  // TODO: validate data
+  // Validate data
+  if (!data || Object.keys(data) == 0) {
+    res.status(400).json('Not enough data');
+    return;
+  }
 
+  // Accept to add link
+  const now = new Date();
+  data.added = now.getTime();
   const table = direct ? 'Main' : 'Temp';
   let isSuccess = await addToTable({ table, data });
   if (isSuccess) {

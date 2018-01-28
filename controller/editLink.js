@@ -4,7 +4,17 @@ import { updateInTable } from '../models/models';
 import { addLog } from '../utils/log';
 
 export default async function (req, res) {
-  const { id, table, changes, link } = req.body;
+  let { id, table, changes, link } = req.body;
+
+  // Validate changes
+  if (!changes || Object.keys(changes) == 0) {
+    res.status(400).json('Not enough data');
+    return;
+  }
+
+  // Accept to change
+  const now = new Date();
+  changes.lastedit = now.getTime();
   let isSuccess = await updateInTable({
     table,
     changes,
@@ -24,7 +34,7 @@ export default async function (req, res) {
       code: 'error',
       content: `Edit ${id} - ${link} failed`,
     });
-    
+
     res.status(500).json('Internal error');
   }
 }

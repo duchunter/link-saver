@@ -8,12 +8,12 @@ CREATE TABLE Main (
   link TEXT,
   title TEXT,
   tags TEXT,
-  added VARCHAR,
+  added BIGINT,
   doc TEXT,
   rating VARCHAR,
   read VARCHAR,
   edit VARCHAR,
-  lastedit VARCHAR,
+  lastedit BIGINT,
   report TEXT,
   relation TEXT,
   lib TEXT
@@ -24,12 +24,12 @@ CREATE TABLE Temp (
   link TEXT,
   title TEXT,
   tags TEXT,
-  added VARCHAR,
+  added BIGINT,
   doc TEXT,
   rating VARCHAR,
   read VARCHAR,
   edit VARCHAR,
-  lastedit VARCHAR,
+  lastedit BIGINT,
   report TEXT,
   relation TEXT,
   lib TEXT,
@@ -38,7 +38,7 @@ CREATE TABLE Temp (
 
 CREATE TABLE Logs (
   id SERIAL PRIMARY KEY,
-  created TEXT,
+  created BIGINT,
   code VARCHAR,
   content TEXT
 );
@@ -47,22 +47,22 @@ INSERT INTO Main (
   link, title, tags, added, doc, rating, read, edit,
   lastedit, report, relation, lib
 ) VALUES (
-  'link', 'title', 'tags', 'added', 'doc', 'rating', 'read', 'edit',
-  'lastedit', 'report', 'relation', 'lib'
+  'link', 'title', 'tags', '1', 'doc', 'rating', 'read', 'edit',
+  '1', 'report', 'relation', 'lib'
 );
 
 INSERT INTO Temp (
   link, title, tags, added, doc, rating, read, edit,
   lastedit, report, relation, lib
 ) VALUES (
-  'link', 'title', 'tags', 'added', 'doc', 'rating', 'read', 'edit',
-  'lastedit', 'report', 'relation', 'lib'
+  'link', 'title', 'tags', '1', 'doc', 'rating', 'read', 'edit',
+  '1', 'report', 'relation', 'lib'
 );
 
 INSERT INTO Logs (
   created, code, content
 ) VALUES (
-  'created', 'code', 'content'
+  '1', 'code', 'content'
 );
 
 SELECT COUNT(*) FROM Main;

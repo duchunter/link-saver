@@ -25,7 +25,7 @@ const router = express.Router();
 // Get info
 router.post('/api/info', authCheck, scopeCheck, requestInfo);
 
-// Request links
+// Search links
 router.post('/api/search', authCheck, scopeCheck, searchLink);
 
 // Add new link with 2 mode: direct and temp
