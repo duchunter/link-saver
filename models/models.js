@@ -35,7 +35,7 @@ async function scanTable({ table, limit, offset, condition }) {
     // ERROR
     addLog({
       code: 'error',
-      content: `Model: failed to 'select * from ${table} ${query} ${range}'`,
+      content: `Model: select * from ${table} ${query} ${range}`,
     });
     result = [];
   }
@@ -61,7 +61,7 @@ async function addToTable({ table, data }) {
     addLog({
       code: 'error',
       content:
-        `Model: failed to 'insert into ${table} (${keys}) values (${values})'`,
+        `Model: insert into ${table} (${keys}) values (${values})`,
     });
     result = false;
   }
@@ -89,7 +89,7 @@ async function updateInTable({ table, changes, condition }) {
     addLog({
       code: 'error',
       content:
-        `Model: failed to 'update ${table} set ${update} where ${query}'`,
+        `Model: update ${table} set ${update} where ${query}`,
     });
     result = false;
   }
@@ -113,7 +113,7 @@ async function delFromTable({table, condition}) {
     // ERROR
     addLog({
       code: 'error',
-      content: `Model: failed to 'delete from ${table} where ${query}'`,
+      content: `Model: delete from ${table} where ${query}`,
     });
     result = false;
   }
@@ -139,9 +139,9 @@ async function countInTable({ table, col, condition }) {
     addLog({
       code: 'error',
       content:
-        `Model: failed to 'select count(${col || '*'}) from ${table} ${query}'`,
+        `Model: select count(${col || '*'}) from ${table} ${query}`,
     });
-    result = { count: -1 };
+    result = [{ count: -1 }];
   }
 
   return result;

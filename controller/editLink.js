@@ -13,8 +13,7 @@ export default async function (req, res) {
   }
 
   // Accept to change
-  const now = new Date();
-  changes.lastedit = now.getTime();
+  changes.lastedit = new Date().getTime();
   let isSuccess = await updateInTable({
     table,
     changes,

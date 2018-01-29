@@ -12,8 +12,7 @@ const domain = 'http://localhost:3001/api/log';
 // ADD LOG TO DB
 async function addLog({ code, content }) {
   // Created time in millisecond
-  const now = new Date();
-  const created = now.getTime();
+  const created = new Date().getTime();
 
   // Add to log table
   let isSuccess = await addToTable({
@@ -33,8 +32,7 @@ async function addLog({ code, content }) {
 // SEND ALL LOG TO LOG SERVER
 async function sendLog() {
   // Send at millisecond
-  const now = new Date();
-  const send = now.getTime();
+  const send = new Date().getTime();
 
   // Get all log and send api
   const allLogs = await scanTable({ table: 'Logs' });

@@ -13,8 +13,7 @@ export default async function (req, res) {
   }
 
   // Accept to add link
-  const now = new Date();
-  data.added = now.getTime();
+  data.added = new Date().getTime();
   const table = direct ? 'Main' : 'Temp';
   let isSuccess = await addToTable({ table, data });
   if (isSuccess) {
