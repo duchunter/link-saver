@@ -2,8 +2,8 @@
 
 import { scanTable } from '../models/models';
 
-// For checking title
-function checkTitle(target, string) {
+// For checking string-type data like title
+function checkStringData(target, string) {
   return target.includes(string);
 }
 
@@ -23,19 +23,28 @@ export default async function (req, res) {
   if (!mode) mode = 'all';
 
   // Add special data here
-  let specialData = ['title', 'tags', 'lib', 'report'];
+  let specialSplitData = ['tags', 'lib', 'report'];
+  let specialStringData = ['title', 'link', 'doc', 'read', 'edit', 'relation'];
   let specialContent = {};
 
-  // Check condition for special search data
+  // Check condition for special string data
   try {
     const allKeys = Object.keys(condition);
-    specialData.forEach((item) => {
+    specialStringData.forEach((item) => {
       if (allKeys.includes(item)) {
         /**
          *  Save value of special data to specialContent
          *  and delete it from condition because model
          *  cannot compare it the smart way
          */
+        specialContent[item] = condition[item];
+        delete condition[item];
+      }
+    });
+
+    // Same thing for special split data
+    specialSplitData.forEach((item) => {
+      if (allKeys.includes(item)) {
         specialContent[item] = condition[item];
         delete condition[item];
       }
@@ -51,8 +60,8 @@ export default async function (req, res) {
   let complexFilter = function (item) {
     let qualified = true;
     Object.keys(specialContent).forEach((key) => {
-      if (key === 'title') {
-        qualified &= checkTitle(item.title, specialContent.title);
+      if (specialStringData.includes(key)) {
+        qualified &= checkStringData(item[key], specialContent[key]);
       } else {
         qualified &= checkSplitData(item[key], specialContent[key]);
       }
