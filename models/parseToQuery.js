@@ -15,8 +15,8 @@ export default function (condition, connector) {
       // NOT
       if (logic === '!=') return `not ${key}=${value}`;
 
-      // OR, value will be an array of optional values
-      if (logic === '||') {
+      // OR, AND, value will be an array of other values
+      if (logic === '||' || logic === '&&') {
         // If value is not an array
         if (!value.length) return `${key}`;
 
@@ -33,7 +33,7 @@ export default function (condition, connector) {
 
           // No logic, just '='
           return `${key}=${option}`;
-        }).join(' or ');
+        }).join(logic === '||' ? ' or ' : ' and ');
       }
 
       // > < >= <=
