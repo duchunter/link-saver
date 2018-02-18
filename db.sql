@@ -47,7 +47,7 @@ INSERT INTO Main (
   link, title, tags, added, doc, rating, read, edit,
   lastedit, report, relation, lib
 ) VALUES (
-  'link', 'title', 'tags', '1', 'doc', 'rating', 'read', 'edit',
+  'link', 'title', 'tags', '1', 'doc', '2', 'read', 'edit',
   '1', 'report', 'relation', 'lib'
 );
 
@@ -55,8 +55,8 @@ INSERT INTO Temp (
   link, title, tags, added, doc, rating, read, edit,
   lastedit, report, relation, lib
 ) VALUES (
-  'link', 'title', 'tags', '1', 'doc', 'rating', 'read', 'edit',
-  '1', 'report', 'relation', 'lib'
+  'link', 'title', 'tags', '1518961075570', 'doc', '3', 'read', 'edit',
+  '1518961075570', 'report', 'relation', 'lib'
 );
 
 INSERT INTO Logs (
