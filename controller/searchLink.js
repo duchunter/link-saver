@@ -18,6 +18,7 @@ function checkSplitData(target, dataString) {
   return qualified;
 }
 
+//  Main function
 export default async function (req, res) {
   let { mode, table, condition, limit } = req.body;
   if (!mode) mode = 'all';
