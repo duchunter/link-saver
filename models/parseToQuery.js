@@ -7,7 +7,9 @@
 */
 
 export default function (condition, connector) {
-  return Object.keys(condition).map((key) => {
+  return Object.keys(condition)
+    .filter(key => !!condition[key])
+    .map((key) => {
     // For comparision logic
     if (typeof(condition[key]) === 'object') {
       const { logic, value } = condition[key];

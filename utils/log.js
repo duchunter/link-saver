@@ -17,7 +17,12 @@ async function addLog({ code, content }) {
   // Add to log table
   let isSuccess = await addToTable({
     table: 'Logs',
-    data: { created, code, content }
+    data: {
+      created,
+      code,
+      // Clear all '' to avoid query error
+      content: content.replace(/'/g, "")
+    }
   });
 
   /**
