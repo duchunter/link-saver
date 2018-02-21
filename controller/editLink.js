@@ -23,7 +23,7 @@ export default async function (req, res) {
   if (isSuccess) {
     addLog({
       code: 'edit-link',
-      content: `${id} - ${link}`,
+      content: `${id} - ${link} - ${Object.keys(changes).join(', ')} to ${Object.values(changes).join(', ')}`,
     });
 
     res.status(200).json('Link updated');
