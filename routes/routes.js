@@ -38,7 +38,7 @@ router.post('/api/edit', authCheck, scopeCheck, editLink);
 router.post('/api/adjust', authCheck, scopeCheck, adjustLink);
 
 // Delete link
-router.delete('/api/delete', authCheck, scopeCheck, deleteLink);
+router.post('/api/delete', authCheck, scopeCheck, deleteLink);
 
                   // SUPPPORTING MODULES
 
