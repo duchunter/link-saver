@@ -26,7 +26,7 @@ const router = express.Router();
 router.post('/api/info', authCheck, scopeCheck, requestInfo);
 
 // Search links
-router.post('/api/search', searchLink);
+router.post('/api/search', authCheck, scopeCheck, searchLink);
 
 // Add new link with 2 mode: direct and temp
 router.put('/api/add', authCheck, scopeCheck, addLink);
@@ -53,13 +53,14 @@ router.post('/api/backup', (req, res) => {
 });
 
 // Request instant log transfer
-router.post('/api/log', authCheck, scopeCheck, async (req, res) => {
-  let isSuccess = await sendLog();
-  if (isSuccess) {
-    res.status(200).json('All logs have been sent');
-  } else {
-    res.status(500).json('ERROR: Cannot send logs');
-  }
+router.post('/api/log', authCheck, scopeCheck, (req, res) => {
+  sendLog().then(isSuccess => {
+    if (isSuccess) {
+      res.status(200).json('All logs have been sent');
+    } else {
+      res.status(500).json('ERROR: Cannot send logs');
+    }
+  });
 });
 
 export default router;

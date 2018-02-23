@@ -34,7 +34,7 @@ export default async function (req, res) {
   delete linkList[0].id;
 
   // Add link to new table and remove from the old one
-  isSuccess = await Promise.all([
+  let isSuccess = await Promise.all([
     addToTable({
       table: newTable,
       data: linkList[0]
@@ -53,7 +53,7 @@ export default async function (req, res) {
       content: `${linkList[0].id} - ${linkList[0].link}`,
     });
 
-    res.status(200).json(`Link ${action}ed`);
+    res.status(200).json(`Link ${action}d`);
   } else {
     // ERROR
     const status = `Add: ${isSuccess[0]}, Delete: ${isSuccess[1]}`;
