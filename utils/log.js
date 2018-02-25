@@ -25,12 +25,7 @@ async function addLog({ code, content }) {
     }
   });
 
-  /**
-   * A terrible problem and may not happen
-   * if it happen there are 2 cases
-   * - Wrong syntax (meh)
-   * - DB is full or error or whatever (oh f*ck)
-   */
+  // Error
   if (!isSuccess) console.log('Cannot save log!');
 }
 
@@ -41,19 +36,26 @@ async function sendLog() {
 
   // Get all log and send api
   const allLogs = await scanTable({ table: 'Logs' });
-  let response;
+  let result = null;
   try {
-    response = await request.put(domain, {
-      send,
-      name: 'Link saver',
-      data: allLogs,
+    result = await request({
+      method: 'PUT',
+      uri: domain,
+      body: {
+        send,
+        name: 'Link saver',
+        data: allLogs,
+      },
+
+      json: true,
+      resolveWithFullResponse: true
     });
-  } catch (e) {
-    response = false;
+  } catch (err) {
+    result = err;
   }
 
   // If sending api request failed
-  if (!response) {
+  if (!result.statusCode) {
     addLog({
       code: 'error',
       content: 'Failed to send api request to log server',
@@ -63,7 +65,7 @@ async function sendLog() {
   }
 
   // If ok, delete all logs
-  if (response.statusCode === 201) {
+  if (result.statusCode == 201) {
     allLogs.forEach(item => delFromTable({
       table: 'Logs',
       condition: { id: item.id },
@@ -81,7 +83,7 @@ async function sendLog() {
   addLog({
     code: 'error',
     content:
-      `Log response: status ${response.status}, msg: ${response.body.msg}`,
+      `Log response with status: ${result.statusCode} - msg: ${result.response.body}`,
   });
 
   return false;

@@ -5,12 +5,13 @@
   "scripts": {
     "start": "babel-node ./bin/www.js --presets es2015,stage-2",
     "demon": "nodemon ./bin/www.js --exec babel-node --presets es2015,stage-2",
-    "build": "babel bin -d dist --presets es2015,stage-2",
+    "build": "babel bin -d build --presets es2015,stage-2",
     "serve": "node dist/www.js"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
+    "connect-history-api-fallback": "^1.5.0",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
@@ -21,6 +22,7 @@
     "jwks-rsa": "^1.2.1",
     "morgan": "~1.9.0",
     "pg-promise": "^7.3.3",
+    "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "~2.4.5"
   },
