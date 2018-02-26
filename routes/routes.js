@@ -23,10 +23,10 @@ const router = express.Router();
                     // MAIN MODULES
 
 // Get info
-router.post('/api/info', authCheck, scopeCheck, requestInfo);
+router.post('/api/info', authCheck, requestInfo);
 
 // Search links
-router.post('/api/search', authCheck, scopeCheck, searchLink);
+router.post('/api/search', authCheck, searchLink);
 
 // Add new link with 2 mode: direct and temp
 router.put('/api/add', authCheck, scopeCheck, addLink);
