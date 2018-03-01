@@ -15,7 +15,9 @@ export default function (condition, connector) {
       const { logic, value } = condition[key];
 
       // NOT
-      if (logic === '!=') return `not ${key}=${value}`;
+      if (logic === '!=') {
+        return `not ${key}=${value.replace(/[', "]/g, "//")}`;
+      }
 
       // OR, AND, value will be an array of other values
       if (logic === '||' || logic === '&&') {
@@ -27,22 +29,26 @@ export default function (condition, connector) {
           // If even option contain logic operation (fuk my life)
           if (typeof(option) === 'object') {
             // NOT
-            if (option.logic === '!=') return `not ${key}=${option.value}`;
+            if (option.logic === '!=') {
+              return `not ${key}=${option.value.replace(/[', "]/g, "//")}`;
+            }
 
             // > < >= <=
-            return `${key}${option.logic}${option.value}`
+            return `${key}${option.logic.replace(/[', "]/g, "//")}`
+                    + `${option.value.replace(/[', "]/g, "//")}`
           }
 
           // No logic, just '='
-          return `${key}=${option}`;
+          return `${key}=${option.replace(/[', "]/g, "//")}`;
         }).join(logic === '||' ? ' or ' : ' and ');
       }
 
       // > < >= <=
-      return `${key}${logic}${value}`;
+      return `${key}${logic.replace(/[', "]/g, "//")}`
+              + `${value.replace(/[', "]/g, "//")}`;
     }
 
     // Common =
-    return `${key}='${condition[key]}'`;
+    return `${key}='${condition[key].toString().replace(/[', "]/g, "//")}'`;
   }).join(connector);
 }

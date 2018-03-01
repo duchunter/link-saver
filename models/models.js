@@ -2,7 +2,6 @@
 
 import promise from 'bluebird';
 import pg from 'pg-promise';
-import { addLog } from '../utils/log';
 import read from './methods/read';
 import create from './methods/create';
 import update from './methods/update';

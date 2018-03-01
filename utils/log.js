@@ -20,8 +20,7 @@ async function addLog({ code, content }) {
     data: {
       created,
       code,
-      // Clear all '' to avoid query error
-      content: content.replace(/'/g, "")
+      content: content
     }
   });
 
@@ -31,9 +30,6 @@ async function addLog({ code, content }) {
 
 // SEND ALL LOG TO LOG SERVER
 async function sendLog() {
-  // Send at millisecond
-  const send = new Date().getTime();
-
   // Get all log and send api
   const allLogs = await scanTable({ table: 'Logs' });
   let result = null;
@@ -42,9 +38,8 @@ async function sendLog() {
       method: 'PUT',
       uri: domain,
       body: {
-        send,
         name: 'Link saver',
-        data: allLogs,
+        package: allLogs,
       },
 
       json: true,

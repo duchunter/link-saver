@@ -1,4 +1,5 @@
 import parse from '../parseToQuery';
+import { addLog } from '../../utils/log';
 
 export default async function ({ db, table, col, condition }) {
   let result;

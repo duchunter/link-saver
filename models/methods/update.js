@@ -1,4 +1,5 @@
 import parse from '../parseToQuery';
+import { addLog } from '../../utils/log';
 
 export default async function ({ db, table, changes, condition }) {
   // Must have changes and condition

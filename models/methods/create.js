@@ -1,3 +1,5 @@
+import { addLog } from '../../utils/log';
+
 export default async function ({ db, table, data }) {
   // Must have data
   if (!data) return false;
@@ -5,7 +7,9 @@ export default async function ({ db, table, data }) {
 
   // Parse keys and values from data
   let keys = Object.keys(data).filter(key => !!data[key]);
-  let values = keys.map(key => `'${data[key]}'`);
+  let values = keys.map(key => {
+    return `'${data[key].toString().replace(/[', "]/g, "//")}'`;
+  });
 
   // Await db to respond and return result
   try {
