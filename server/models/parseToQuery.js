@@ -1,5 +1,7 @@
 'use strict'
 
+import { noInjection } from './security';
+
 /*
   Parse condition (object) to query for WHERE and SET statement
   Condition will be divide into `key|operation|value`
@@ -16,7 +18,7 @@ export default function (condition, connector) {
 
       // NOT
       if (logic === '!=') {
-        return `not ${key}=${value.replace(/[', "]/g, "//")}`;
+        return `not ${key}=${noInjection(value)}`;
       }
 
       // OR, AND, value will be an array of other values
@@ -30,25 +32,25 @@ export default function (condition, connector) {
           if (typeof(option) === 'object') {
             // NOT
             if (option.logic === '!=') {
-              return `not ${key}=${option.value.replace(/[', "]/g, "//")}`;
+              return `not ${key}=${noInjection(option.value)}`;
             }
 
             // > < >= <=
-            return `${key}${option.logic.replace(/[', "]/g, "//")}`
-                    + `${option.value.replace(/[', "]/g, "//")}`
+            return `${key}${noInjection(option.logic)}`
+                    + `${noInjection(option.value)}`
           }
 
           // No logic, just '='
-          return `${key}=${option.replace(/[', "]/g, "//")}`;
+          return `${key}=${noInjection(option)}`;
         }).join(logic === '||' ? ' or ' : ' and ');
       }
 
       // > < >= <=
-      return `${key}${logic.replace(/[', "]/g, "//")}`
-              + `${value.replace(/[', "]/g, "//")}`;
+      return `${key}${noInjection(logic)}`
+              + `${noInjection(value)}`;
     }
 
     // Common =
-    return `${key}='${condition[key].toString().replace(/[', "]/g, "//")}'`;
+    return `${key}='${noInjection(condition[key].toString())}'`;
   }).join(connector);
 }

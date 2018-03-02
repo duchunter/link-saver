@@ -5,7 +5,8 @@
 /**
  * Module dependencies.
  */
-
+ 
+import "babel-polyfill";
 import app from '../app';
 import http from 'http';
 

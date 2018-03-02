@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./bin/www.js --presets es2015,stage-2",
-    "demon": "nodemon ./bin/www.js --exec babel-node --presets es2015,stage-2",
-    "build": "babel bin -d build --presets es2015,stage-2",
-    "serve": "node dist/www.js"
+    "start": "node build/bin/www.js",
+    "demon": "nodemon ./bin/www.js --exec babel-node",
+    "build": "babel server -d build",
+    "serve": "node build/bin/www.js"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
     "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "connect-history-api-fallback": "^1.5.0",

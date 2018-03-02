@@ -1,5 +1,6 @@
 import parse from '../parseToQuery';
 import { addLog } from '../../utils/log';
+import { normalizeStr } from '../security';
 
 export default async function ({ db, table, limit, offset, condition }) {
   let result = [];
@@ -22,6 +23,15 @@ export default async function ({ db, table, limit, offset, condition }) {
     });
     result = [];
   }
+
+  // Normalize string
+  result.forEach(item => {
+    Object.keys(item).forEach(key => {
+      if (typeof(item[key]) == 'string') {
+        item[key] = normalizeStr(item[key]);
+      }
+    });
+  });
 
   return result;
 }
