@@ -14,7 +14,7 @@ const pgp = pg({
 
 // Comment this when deploy
 const connectionString = 'postgres://localhost:5432/link';
-const db = pgp(connectionString || process.env.DATABASE_URL);
+const db = pgp(process.env.DATABASE_URL || connectionString);
 
 // READ
 export async function scanTable ({ table, limit, offset, condition }) {
