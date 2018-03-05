@@ -24,10 +24,10 @@ export default async function ({ db, table, limit, offset, condition }) {
     result = [];
   }
 
-  // Normalize string
+  // Normalize string, except link's url
   result.forEach(item => {
     Object.keys(item).forEach(key => {
-      if (typeof(item[key]) == 'string') {
+      if (typeof(item[key]) == 'string' && key != 'link') {
         item[key] = normalizeStr(item[key]);
       }
     });
