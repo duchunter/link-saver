@@ -1,4 +1,4 @@
 {
   "presets": ["latest", "stage-2"],
-  "ignore": ["dist" , "views", "public", "node_modules", "build"]
+  "ignore": ["dist" , "views", "public"]
 }

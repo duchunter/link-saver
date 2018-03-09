@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node build/bin/www.js",
-    "demon": "nodemon ./bin/www.js --exec babel-node",
+    "demon": "nodemon .server/bin/www.js --exec babel-node",
     "build": "babel server -d build",
     "serve": "node build/bin/www.js"
   },

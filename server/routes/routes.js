@@ -5,7 +5,7 @@ import express from 'express';
 // Utility modules
 import jwtAuthz from 'express-jwt-authz';
 import { authCheck } from '../utils/auth0';
-import { sendLog } from '../utils/log';
+import sendLog from '../utils/sendLog';
 
 // API modules
 import requestInfo from '../controller/requestInfo';
@@ -54,7 +54,7 @@ router.post('/api/backup', (req, res) => {
 
 // Request instant log transfer
 router.post('/api/log', authCheck, scopeCheck, (req, res) => {
-  sendLog().then(isSuccess => {
+  sendLog(req.headers.authorization).then(isSuccess => {
     if (isSuccess) {
       res.status(200).json('All logs have been sent');
     } else {
