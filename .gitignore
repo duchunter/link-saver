@@ -1,4 +1,4 @@
 node_modules
-utils/auth0-config.js
-utils/sendLog.js
+server/utils/auth0-config.js
+server/utils/sendLog.js
 build
