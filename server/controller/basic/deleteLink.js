@@ -1,7 +1,7 @@
 'use strict'
 
-import { delFromTable } from '../models/models';
-import { addLog } from '../utils/log';
+import { delFromTable } from '../../models/models';
+import { addLog } from '../../utils/log';
 
 export default async function (req, res) {
   const { table, id, link } = req.body;

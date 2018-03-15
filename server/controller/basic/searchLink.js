@@ -1,6 +1,6 @@
 'use strict'
 
-import { scanTable } from '../models/models';
+import { scanTable } from '../../models/models';
 
 // For checking string-type data like title
 function checkStringData(target, string) {

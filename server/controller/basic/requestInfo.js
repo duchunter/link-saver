@@ -1,6 +1,6 @@
 'use strict'
 
-import { countInTable } from '../models/models';
+import { countInTable } from '../../models/models';
 
 export default async function (req, res) {
   const { table, condition } = req.body;

@@ -20,6 +20,7 @@ export default async function ({ db, table, col, condition }) {
       content:
         `Model: select count(${col || '*'}) from ${table} ${query}`,
     });
+    
     result = [{ count: -1 }];
   }
 

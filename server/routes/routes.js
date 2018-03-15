@@ -8,12 +8,15 @@ import { authCheck } from '../utils/auth0';
 import sendLog from '../utils/sendLog';
 
 // API modules
-import requestInfo from '../controller/requestInfo';
-import searchLink from '../controller/searchLink';
-import addLink from '../controller/addLink';
-import adjustLink from '../controller/adjustLink';
-import deleteLink from '../controller/deleteLink';
-import editLink from '../controller/editLink';
+import requestInfo from '../controller/basic/requestInfo';
+import searchLink from '../controller/basic/searchLink';
+import addLink from '../controller/basic/addLink';
+import adjustLink from '../controller/basic/adjustLink';
+import deleteLink from '../controller/basic/deleteLink';
+import editLink from '../controller/basic/editLink';
+
+// Chatbot route
+import handlerBot from '../controller/chatbot/handler';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
@@ -40,6 +43,11 @@ router.post('/api/adjust', authCheck, scopeCheck, adjustLink);
 // Delete link
 router.post('/api/delete', authCheck, scopeCheck, deleteLink);
 
+                  // CHAT BOT
+
+// Handling incomming message
+router.post('/api/webhook', handlerBot);
+
                   // SUPPPORTING MODULES
 
 // Parse web to add link
@@ -47,7 +55,7 @@ router.put('/api/parse', (req, res) => {
   res.json('Parse link');
 });
 
-// Request instant backup
+// TODO: Request instant backup
 router.post('/api/backup', (req, res) => {
   res.json('Manual backup');
 });

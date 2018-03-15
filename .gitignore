@@ -1,4 +1,6 @@
 node_modules
-server/utils/auth0-config.js
 server/utils/sendLog.js
+server/utils/apiaiConfig.js
+server/utils/auth0Config.js
 build
+.env

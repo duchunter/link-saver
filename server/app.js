@@ -10,18 +10,20 @@ import cors from 'cors';
 import history from 'connect-history-api-fallback';
 
 import routes from './routes/routes';
+import verifyBot from './controller/chatbot/verify';
 
 const app = express();
 
 // CORS
 app.use(cors());
 
+app.get('/api/webhook', verifyBot);
+
 // Foward url to front-end
 const staticFileMiddleware = express.static(path.join(__dirname, '/dist/'));
 app.use(staticFileMiddleware);
 app.use(history({
   disableDotRule: true,
-  verbose: true
 }));
 app.use(staticFileMiddleware);
 

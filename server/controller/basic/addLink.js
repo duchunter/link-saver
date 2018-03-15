@@ -1,7 +1,7 @@
 'use strict'
 
-import { addToTable } from '../models/models';
-import { addLog } from '../utils/log';
+import { addToTable } from '../../models/models';
+import { addLog } from '../../utils/log';
 
 export default async function (req, res) {
   let { direct, data } = req.body;

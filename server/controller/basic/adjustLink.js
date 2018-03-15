@@ -2,8 +2,8 @@
 
 // Promote or demote link
 
-import { scanTable, addToTable, delFromTable } from '../models/models';
-import { addLog } from '../utils/log';
+import { scanTable, addToTable, delFromTable } from '../../models/models';
+import { addLog } from '../../utils/log';
 
 export default async function (req, res) {
   const { promote, id } = req.body;
