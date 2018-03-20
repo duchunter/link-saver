@@ -2,5 +2,6 @@ node_modules
 server/utils/sendLog.js
 server/utils/apiaiConfig.js
 server/utils/auth0Config.js
+server/utils/forbiden.js
 build
 .env

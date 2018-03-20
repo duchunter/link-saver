@@ -3,6 +3,8 @@
 import apiai from '../../utils/apiai';
 import webscrape from '../../utils/webscrape';
 import callSendAPI from './callSendAPI';
+import { addToTable, scanTable } from '../../models/models';
+import { addLog } from '../../utils/log';
 
 // Handles messages events
 export default function (sender_psid, received_message) {
@@ -19,13 +21,62 @@ export default function (sender_psid, received_message) {
       // Scrape and send msg back
       received_message.nlp.entities.url.forEach(link => {
         webscrape(link.value).then(data => {
-          let text = data
-            ? `title: ${data.title}`
-            : `Err, i can't parse that url`;
-          callSendAPI(sender_psid, { text });
+          if (!data) {
+            callSendAPI(sender_psid, {
+              text: `Err, i can't scrape this url`,
+            });
+          } else {
+            // Add link to DB
+            data.added = new Date().getTime();
+            data.origin = 'chatbot';
+            addToTable({
+              data,
+              table: 'Temp',
+            }).then(isSuccess => {
+              if (isSuccess) {
+                addLog({
+                  code: 'add-link',
+                  content: data.link,
+                });
+
+                callSendAPI(sender_psid, {
+                  text: `${data.title} added`,
+                });
+              } else {
+                // ERROR
+                addLog({
+                  code: 'error',
+                  content: `Add ${data.link} failed`,
+                });
+                callSendAPI(sender_psid, {
+                  text: `Internal error`,
+                });
+              }
+            });
+          }
         });
       });
 
+    //If contain 'reading list'
+    } else if (received_message.text.toLowerCase().includes('reading list')) {
+      scanTable({
+        table: 'Temp',
+        limit: 5,
+      }).then(data => {
+        if (data.length == 0) {
+          callSendAPI(sender_psid, {
+            text: 'Temp table is empty',
+          });
+        } else {
+          data.forEach(item => {
+            callSendAPI(sender_psid, {
+              text: item.link,
+            });
+          });
+        }
+      });
+
+    // Normal text
     } else {
       // Send msg to Dialogflow and send its response to Messenger
       apiai(received_message.text).then(text => {

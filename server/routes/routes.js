@@ -16,7 +16,7 @@ import deleteLink from '../controller/basic/deleteLink';
 import editLink from '../controller/basic/editLink';
 
 // Chatbot route
-import handlerBot from '../controller/chatbot/handler';
+import handlerBot from '../controller/chatbot/index';
 
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();

@@ -18,6 +18,16 @@ function checkSplitData(target, dataString) {
   return qualified;
 }
 
+// Check scope for forbiden data
+function checkScope(req, res) {
+  if (!req.user || typeof req.user.scope !== 'string') {
+    return false;
+  }
+
+  let scopes = req.user.scope.split(' ');
+  return scopes.includes('admin');
+}
+
 //  Main function
 export default async function (req, res) {
   let { mode, table, condition, limit } = req.body;
@@ -71,10 +81,20 @@ export default async function (req, res) {
     return qualified;
   }
 
+  // Filter forbiden data
+  let forbiden = ['dark'];
+  let forbidenFilter = function (item) {
+    return forbiden.reduce((accepted, key) => {
+      return accepted && !item.tags.includes(key);
+    }, true);
+  }
+
   // If client want to request all at once
   if (mode === 'all') {
     let result = await scanTable({ condition, table });
-    return res.json(result.filter(complexFilter));
+    return checkScope(req, res)
+      ? res.json(result.filter(complexFilter))
+      : res.json(result.filter(complexFilter).filter(forbidenFilter));
   }
 
   // If client want to request some based on mode value
@@ -85,7 +105,9 @@ export default async function (req, res) {
       limit,
       offset: mode * limit
     });
-    return res.json(result.filter(complexFilter));
+    return checkScope(req, res)
+      ? res.json(result.filter(complexFilter))
+      : res.json(result.filter(complexFilter).filter(forbidenFilter));
   }
 
   // Invalid mode

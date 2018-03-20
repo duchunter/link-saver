@@ -50,7 +50,7 @@ export default async function (req, res) {
   if (isSuccess[0] && isSuccess[1]) {
     addLog({
       code: action,
-      content: `${linkList[0].id} - ${linkList[0].link}`,
+      content: `${linkList[0].link}`,
     });
 
     res.status(200).json(`Link ${action}d`);
