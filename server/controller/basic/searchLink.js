@@ -4,7 +4,7 @@ import { scanTable } from '../../models/models';
 
 // For checking string-type data like title
 function checkStringData(target, string) {
-  return target.includes(string);
+  return target && target.includes(string);
 }
 
 // For checking tags, lib, report... data that need to split
@@ -12,7 +12,7 @@ function checkSplitData(target, dataString) {
   let qualified = true;
   const checkList = dataString.split(', ');
   checkList.forEach((item) => {
-    qualified &= target.includes(item);
+    qualified &= (target && target.includes(item));
   });
 
   return qualified;
@@ -25,13 +25,13 @@ function checkScope(req, res) {
   }
 
   let scopes = req.user.scope.split(' ');
-  return scopes.includes('admin');
+  return scopes && scopes.includes('admin');
 }
 
 //  Main function
 export default async function (req, res) {
   let { mode, table, condition, limit } = req.body;
-  if (!mode) mode = 'all';
+  if (mode == null) mode = 'all';
 
   // Add special data here
   let specialSplitData = ['tags', 'lib', 'report'];
@@ -85,6 +85,7 @@ export default async function (req, res) {
   let forbiden = ['dark'];
   let forbidenFilter = function (item) {
     return forbiden.reduce((accepted, key) => {
+      if (!item.tags) return accepted && true;
       return accepted && !item.tags.includes(key);
     }, true);
   }
@@ -98,7 +99,7 @@ export default async function (req, res) {
   }
 
   // If client want to request some based on mode value
-  if (mode > 0) {
+  if (mode >= 0) {
     let result = await scanTable({
       condition,
       table,
