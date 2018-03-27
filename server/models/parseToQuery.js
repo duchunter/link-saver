@@ -26,7 +26,7 @@ export default function (condition, connector) {
         // If value is not an array
         if (!value.length) return `${key}`;
 
-        // Create a sub-query with connector 'or'
+        // Create a sub-query with connector 'or'/'and'
         return value.map((option) => {
           // If even option contain logic operation (fuk my life)
           if (typeof(option) === 'object') {
@@ -43,6 +43,17 @@ export default function (condition, connector) {
           // No logic, just '='
           return `${key}=${noInjection(option)}`;
         }).join(logic === '||' ? ' or ' : ' and ');
+      }
+
+      // Includes, partial value, like string, value also an array
+      if (logic == 'include') {
+        // If not array
+        if (!value.length) return `${key}`;
+
+        // Create a sub query with connector 'and'
+        return value.map(word => {
+          return `upper(${key}) like upper('%${noInjection(word)}%')`;
+        }).join(' and ');
       }
 
       // > < >= <=

@@ -1,9 +1,11 @@
 'use strict'
 
 import { countInTable } from '../../models/models';
+import { adjustCondition } from '../../utils/smartSearch';
 
 export default async function (req, res) {
   const { table, condition } = req.body;
+  adjustCondition(condition);
   let result = await countInTable({ table, condition });
 
   // Invalid query
