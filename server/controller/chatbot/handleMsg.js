@@ -29,51 +29,19 @@ export default function (sender_psid, received_message) {
             // Add link to DB
             data.added = new Date().getTime();
             data.origin = 'chatbot';
-            addToTable({
-              data,
-              table: 'Temp',
-            }).then(isSuccess => {
+            addToTable({ data, table: 'Temp' }).then(isSuccess => {
               if (isSuccess) {
-                addLog({
-                  code: 'add-link',
-                  content: data.link,
-                });
-
-                callSendAPI(sender_psid, {
-                  text: `${data.title} added`,
-                });
+                // Ok -> addlog and send success msg
+                addLog({ code: 'add-link', content: data.link });
+                callSendAPI(sender_psid, { text: `${data.title} added` });
               } else {
                 // ERROR
-                addLog({
-                  code: 'error',
-                  content: `Add ${data.link} failed`,
-                });
-                callSendAPI(sender_psid, {
-                  text: `Internal error`,
-                });
+                addLog({ code: 'error', content: `Add ${data.link} failed` });
+                callSendAPI(sender_psid, { text: `Internal error` });
               }
             });
           }
         });
-      });
-
-    //If contain 'reading list'
-    } else if (received_message.text.toLowerCase().includes('reading list')) {
-      scanTable({
-        table: 'Temp',
-        limit: 5,
-      }).then(data => {
-        if (data.length == 0) {
-          callSendAPI(sender_psid, {
-            text: 'Temp table is empty',
-          });
-        } else {
-          data.forEach(item => {
-            callSendAPI(sender_psid, {
-              text: item.link,
-            });
-          });
-        }
       });
 
     // Normal text
@@ -84,12 +52,31 @@ export default function (sender_psid, received_message) {
       });
     }
 
+  // Handling link in attachment
   } else if (received_message.attachments) {
-    let response = {
-      text: 'Nice! But i only answer to text message :v',
+    let { title, url } = received_message.attachments[0];
+    if (title && url) {
+      addToTable({
+        table: 'Temp',
+        data: {
+          title,
+          link: url,
+          origin: 'chatbot',
+          added: new Date().getTime(),
+        }
+      }).then(isSuccess => {
+        if (isSuccess) {
+          // Ok -> addlog and send success msg
+          addLog({ code: 'add-link', content: url });
+          callSendAPI(sender_psid, { text: `${title} added` });
+        } else {
+          // ERROR
+          addLog({ code: 'error', content: `Add ${url} failed` });
+          callSendAPI(sender_psid, { text: `Internal error` });
+        }
+      });
+    } else {
+      callSendAPI(sender_psid, { text: 'Sorry, i can only save link :)' });
     }
-
-    // Sends the response message
-    callSendAPI(sender_psid, response);
   }
 }
