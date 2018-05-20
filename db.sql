@@ -64,5 +64,3 @@ INSERT INTO Logs (
 ) VALUES (
   '1', 'code', 'content'
 );
-
-SELECT COUNT(*) FROM Main;
