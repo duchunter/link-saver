@@ -12,7 +12,7 @@ const pgp = pg({
   promiseLib: promise
 });
 
-// Comment this when deploy
+// Connection string use for local testing only
 const connectionString = 'postgres://localhost:5432/link';
 const db = pgp(process.env.DATABASE_URL || connectionString);
 
