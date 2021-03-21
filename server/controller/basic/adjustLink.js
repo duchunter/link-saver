@@ -1,9 +1,6 @@
-'use strict'
-
 // Promote or demote link
 
 import { scanTable, addToTable, delFromTable } from '../../models/models';
-import { addLog } from '../../utils/log';
 
 export default async function (req, res) {
   const { promote, id } = req.body;
@@ -48,22 +45,8 @@ export default async function (req, res) {
   // Return message based on linkList
   const action = promote ? 'promote' : 'demote';
   if (isSuccess[0] && isSuccess[1]) {
-    addLog({
-      code: action,
-      content: `${linkList[0].link}`,
-    });
-
     res.status(200).json(`Link ${action}d`);
   } else {
-    // ERROR
-    const status = `Add: ${isSuccess[0]}, Delete: ${isSuccess[1]}`;
-    addLog({
-      code: 'error',
-      content: `${action} link catch an error
-      - Status: ${status},
-      - Data: ${linkList[0].toString()}`,
-    });
-
     res.status(500).json(status);
   }
 }

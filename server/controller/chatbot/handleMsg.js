@@ -1,10 +1,7 @@
-'use strict'
-
 import apiai from '../../utils/apiai';
 import webscrape from '../../utils/webscrape';
 import callSendAPI from './callSendAPI';
-import { addToTable, scanTable } from '../../models/models';
-import { addLog } from '../../utils/log';
+import { addToTable } from '../../models/models';
 
 // Handles messages events
 export default function (sender_psid, received_message) {
@@ -31,12 +28,8 @@ export default function (sender_psid, received_message) {
             data.origin = 'chatbot';
             addToTable({ data, table: 'Temp' }).then(isSuccess => {
               if (isSuccess) {
-                // Ok -> addlog and send success msg
-                addLog({ code: 'add-link', content: data.link });
                 callSendAPI(sender_psid, { text: `${data.title} added` });
               } else {
-                // ERROR
-                addLog({ code: 'error', content: `Add ${data.link} failed` });
                 callSendAPI(sender_psid, { text: `Internal error` });
               }
             });
@@ -66,12 +59,8 @@ export default function (sender_psid, received_message) {
         }
       }).then(isSuccess => {
         if (isSuccess) {
-          // Ok -> addlog and send success msg
-          addLog({ code: 'add-link', content: url });
           callSendAPI(sender_psid, { text: `${title} added` });
         } else {
-          // ERROR
-          addLog({ code: 'error', content: `Add ${url} failed` });
           callSendAPI(sender_psid, { text: `Internal error` });
         }
       });

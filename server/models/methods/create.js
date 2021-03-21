@@ -21,6 +21,7 @@ export default async function ({ db, table, data }) {
     addLog({
       code: 'error',
       content: `Model: insert into ${table} (${keys}) values (${values})`,
+      text: e.toString()
     });
     return false;
   }

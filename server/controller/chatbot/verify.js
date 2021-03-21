@@ -1,5 +1,3 @@
-'use strict'
-
 export default function (req, res) {
   // Your verify token. Should be a random string.
   let VERIFY_TOKEN = process.env.VERIFY_TOKEN;

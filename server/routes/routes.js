@@ -1,11 +1,8 @@
-'use strict'
-
 import express from 'express';
 
 // Utility modules
 import jwtAuthz from 'express-jwt-authz';
 import { authCheck } from '../utils/auth0';
-import sendLog from '../utils/sendLog';
 
 // API modules
 import requestInfo from '../controller/basic/requestInfo';
@@ -21,9 +18,10 @@ import handlerBot from '../controller/chatbot/index';
 const scopeCheck = jwtAuthz(['admin']);
 const router = express.Router();
 
-// TODO: add authCheck and scopeCheck when ready
+// TODO: add authCheck and scopeCheck when ready, backup route
 
-                    // MAIN MODULES
+
+// ------------------ MAIN MODULES ----------------------
 
 // Get info
 router.post('/api/info', authCheck, requestInfo);
@@ -43,12 +41,13 @@ router.post('/api/adjust', authCheck, scopeCheck, adjustLink);
 // Delete link
 router.post('/api/delete', authCheck, scopeCheck, deleteLink);
 
-                  // CHAT BOT
+
+// ------------------ CHAT BOT ----------------------
 
 // Handling incomming message
 router.post('/api/webhook', handlerBot);
 
-                  // SUPPPORTING MODULES
+// ------------------ CHAT BOT ----------------------
 
 // Parse web to add link
 router.put('/api/parse', (req, res) => {
@@ -60,15 +59,5 @@ router.post('/api/backup', (req, res) => {
   res.json('Manual backup');
 });
 
-// Request instant log transfer
-router.post('/api/log', authCheck, scopeCheck, (req, res) => {
-  sendLog(req.headers.authorization).then(isSuccess => {
-    if (isSuccess) {
-      res.status(200).json('All logs have been sent');
-    } else {
-      res.status(500).json('ERROR: Cannot send logs');
-    }
-  });
-});
 
 export default router;

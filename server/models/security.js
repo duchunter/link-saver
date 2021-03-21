@@ -1,5 +1,3 @@
-'use strict'
-
 // Special code
 let transform = {};
 transform['//'] = `'`;

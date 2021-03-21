@@ -36,13 +36,6 @@ CREATE TABLE Temp (
   origin TEXT
 );
 
-CREATE TABLE Logs (
-  id SERIAL PRIMARY KEY,
-  created BIGINT,
-  code VARCHAR,
-  content TEXT
-);
-
 INSERT INTO Main (
   link, title, tags, added, doc, rating, read, edit,
   lastedit, report, relation, lib
@@ -57,10 +50,4 @@ INSERT INTO Temp (
 ) VALUES (
   'link', 'title', 'tags', '1518961075570', 'doc', '3', 'read', 'edit',
   '1518961075570', 'report', 'relation', 'lib'
-);
-
-INSERT INTO Logs (
-  created, code, content
-) VALUES (
-  '1', 'code', 'content'
 );

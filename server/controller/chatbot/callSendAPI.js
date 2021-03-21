@@ -1,5 +1,3 @@
-'use strict'
-
 import request from 'request';
 import { addLog } from '../../utils/log';
 
@@ -25,6 +23,7 @@ export default function callSendAPI(sender_psid, response) {
       addLog({
         code: 'error',
         content: 'Failed to send response to fb Messenger',
+        text: err.toString()
       });
     }
   });

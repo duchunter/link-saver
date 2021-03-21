@@ -1,5 +1,3 @@
-'use strict'
-
 import { countInTable } from '../../models/models';
 import { adjustCondition } from '../../utils/smartSearch';
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import { noInjection } from './security';
 
 /*

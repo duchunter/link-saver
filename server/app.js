@@ -1,13 +1,10 @@
-'use strict'
-
 import express from 'express';
 import path from 'path';
-import favicon from 'serve-favicon';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import history from 'connect-history-api-fallback';
+import cons from 'consolidate';
 
 import routes from './routes/routes';
 import verifyBot from './controller/chatbot/verify';
@@ -20,7 +17,7 @@ app.use(cors());
 app.get('/api/webhook', verifyBot);
 
 // Foward url to front-end
-const staticFileMiddleware = express.static(path.join(__dirname, '/dist/'));
+const staticFileMiddleware = express.static(path.join(__dirname, '../dist/'));
 app.use(staticFileMiddleware);
 app.use(history({
   disableDotRule: true,
@@ -28,19 +25,17 @@ app.use(history({
 app.use(staticFileMiddleware);
 
 // view engine setup
+app.engine('html', cons.swig)
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // All front-end
-app.use('/', express.static(path.join(__dirname, '/dist/')));
+app.use('/', express.static(path.join(__dirname, '../dist/')));
 
 app.use('/', routes);
 

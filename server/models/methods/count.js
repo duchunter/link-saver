@@ -17,8 +17,8 @@ export default async function ({ db, table, col, condition }) {
     // ERROR
     addLog({
       code: 'error',
-      content:
-        `Model: select count(${col || '*'}) from ${table} ${query}`,
+      content: `Model: select count(${col || '*'}) from ${table} ${query}`,
+      text: e.toString()
     });
 
     result = [{ count: -1 }];

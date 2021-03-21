@@ -1,8 +1,9 @@
-'use strict'
-
 import rp from 'request-promise';
 import cheerio from 'cheerio';
-import forbiden from './forbiden';
+
+
+const forbidenKeywords = process.env.FORBIDEN_KEYWORDS.split(',')
+
 
 export default async function (url) {
   let html;
@@ -16,7 +17,7 @@ export default async function (url) {
   let item = { link: url };
   let $ = cheerio.load(html);
   let simplify = html.trim().toLowerCase();
-  let nsfw = forbiden.reduce((result, item) => {
+  let nsfw = forbidenKeywords.reduce((result, item) => {
     return result || simplify.includes(item);
   }, false);
 

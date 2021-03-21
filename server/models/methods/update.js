@@ -19,6 +19,7 @@ export default async function ({ db, table, changes, condition }) {
     addLog({
       code: 'error',
       content: `Model: update ${table} set ${update} where ${query}`,
+      text: e.toString()
     });
     return false;
   }

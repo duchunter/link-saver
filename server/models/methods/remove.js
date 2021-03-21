@@ -16,6 +16,7 @@ export default async function ({ db, table, condition }) {
     addLog({
       code: 'error',
       content: `Model: delete from ${table} where ${query}`,
+      text: e.toString()
     });
     return false;
   }

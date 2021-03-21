@@ -1,5 +1,3 @@
-'use strict'
-
 import promise from 'bluebird';
 import pg from 'pg-promise';
 import read from './methods/read';
@@ -12,9 +10,7 @@ const pgp = pg({
   promiseLib: promise
 });
 
-// Connection string use for local testing only
-const connectionString = 'postgres://localhost:5432/link';
-const db = pgp(process.env.DATABASE_URL || connectionString);
+const db = pgp(process.env.DATABASE_URL);
 
 // READ
 export async function scanTable ({ table, limit, offset, condition }) {

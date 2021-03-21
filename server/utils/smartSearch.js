@@ -1,5 +1,3 @@
-'use strict'
-
 // Add special data here
 const specialData = [
   'tags', 'lib', 'report', 'title', 'link', 'doc', 'read', 'edit', 'relation'

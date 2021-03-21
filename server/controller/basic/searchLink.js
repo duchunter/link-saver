@@ -1,5 +1,3 @@
-'use strict'
-
 import { scanTable } from '../../models/models';
 import { adjustCondition, getSafeResult } from '../../utils/smartSearch';
 

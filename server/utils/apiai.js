@@ -1,8 +1,10 @@
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1 } from 'uuid';
 import apiai from 'apiai-promise';
-import clientAccessKey from './apiaiConfig';
 
+
+const clientAccessKey = process.env.APIAI_CLIENT_ACCESS_KEY
 const bot = apiai(clientAccessKey);
+
 
 export default async function (text) {
   let res;

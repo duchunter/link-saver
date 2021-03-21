@@ -1,5 +1,3 @@
-'use strict'
-
 import handleMessage from './handleMsg';
 
 export default function (req, res) {

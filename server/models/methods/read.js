@@ -20,6 +20,7 @@ export default async function ({ db, table, limit, offset, condition }) {
     addLog({
       code: 'error',
       content: `Model: select * from ${table} ${query} ${range}`,
+      text: e.toString()
     });
     result = [];
   }
