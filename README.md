@@ -15,6 +15,7 @@ Bookmark link with information. This app has:
 - If you are not ```admin``` delete the route ```/api/webhook``` and anything related to it :)
 - If you want to use your own Auth0 app, edit ```server/utils/auth0Config.js```
 - Setup Postgresql database using content in ```db.sql	```
+- Create a new ```.env``` based on ```.env.example```
 
 ### Build Setup
 

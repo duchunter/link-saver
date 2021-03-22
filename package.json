@@ -2,6 +2,18 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "server/*",
+      "public/*"
+    ],
+    "ignore": [
+      "**/__tests__/**",
+      "*.test.js",
+      "*.spec.js"
+    ]
+  },
   "scripts": {
     "start": "npm run prod",
     "build": "npm-run-all clean transpile set-env",
@@ -17,6 +29,7 @@
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
+    "@slack/web-api": "^6.1.0",
     "apiai": "^4.0.3",
     "apiai-promise": "^1.0.0",
     "babel-polyfill": "^6.26.0",
@@ -45,18 +58,6 @@
   "babel": {
     "presets": [
       "@babel/preset-env"
-    ]
-  },
-  "nodemonConfig": {
-    "exec": "npm run dev",
-    "watch": [
-      "server/*",
-      "public/*"
-    ],
-    "ignore": [
-      "**/__tests__/**",
-      "*.test.js",
-      "*.spec.js"
     ]
   }
 }
