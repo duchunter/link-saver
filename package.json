@@ -18,11 +18,12 @@
     "start": "npm run prod",
     "build": "npm-run-all clean transpile set-env",
     "server": "node ./dist-server/bin/www",
-    "dev": "npm-run-all build server",
-    "prod": "npm-run-all build server",
+    "dev": "npm-run-all build replace-ui-host server",
+    "prod": "npm-run-all build replace-ui-host server",
     "transpile": "babel ./server --out-dir dist-server",
     "clean": "rimraf dist-server",
     "set-env": "node set-env.js",
+    "replace-ui-host": "node replace-ui-host.js",
     "watch:dev": "nodemon"
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "morgan": "~1.9.1",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
+    "pg": "^8.5.1",
     "pg-promise": "^10.9.5",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
