@@ -22,11 +22,11 @@ fs.readdir(jsFolder, (err, files) => {
             if (isDev) {
                 console.log(`Replace host to local in ${filepath}`)
                 newContent = content.split(prodHost).join(localhost)
-                newContent = content.split(localhostClient).join(localhost)
+                newContent = newContent.split(localhostClient).join(localhost)
             } else {
                 console.log(`Replace host to production in ${filepath}`)
                 newContent = content.split(localhost).join(prodHost)
-                newContent = content.split(localhostClient).join(prodHost)
+                newContent = newContent.split(localhostClient).join(prodHost)
             }
             
             fs.writeFile(filepath, newContent, (err) => {
